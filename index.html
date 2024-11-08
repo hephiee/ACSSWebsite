@@ -1,58 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ryan hephie Lai</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- Navigation -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            overflow-x: hidden;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            margin: 10px 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #ffdd57;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+        .portfolio-item {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            transition: transform 0.3s;
+        }
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>My Portfolio</h1>
     <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
     </nav>
+</header>
 
-    <!-- Home Section -->
-    <section id="home">
-      <h1>Portfolio</h1>
-      <p>placeholder p tag</p>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-      <h2>check this out</h2>
-      <div class="project">
-        <h3>check this out again</h3> 
-        <p>cold....</p>
-      </div>
-      <div class="project">
-        <h3>isnt this crazy</h3>
-        <p>damn!!</p>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" style="display: flex; align-items: center;">
-      <div style="flex: 1; padding-right: 20px;">
+<div class="container">
+    <section id="about">
         <h2>About Me</h2>
-        <p>placehodler p tag</p>
-        <p class="large-text" style="font-family: 'Comic Sans MS', cursive, sans-serif;">shameless plug from rexan <a href="https://rexanwong.xyz" target="_blank">rexanwong.xyz</a>?</p>
-      </div>
-      <img src="asset/goated-ta.png" alt="A small picture" style="width: 100px; height: auto; margin-top: 10px;">
-    </section> 
+        <p>Welcome to my portfolio! I'm a passionate developer with experience in web technologies.</p>
+    </section>
 
-    <!-- Audio Section --> 
-    <audio controls>
-      <source src="asset/sound.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="portfolio-item">
+            <h3>Project 1</h3>
+            <p>Description of Project 1. What technologies were used, what was the goal, etc.</p>
+        </div>
+        <div class="portfolio-item">
+            <h3>Project 2</h3>
+            <p>Description of Project 2. What technologies were used, what was the goal, etc.</p>
+        </div>
+        <div class="portfolio-item">
+            <h3>Project 3</h3>
+            <p>Description of Project 3. What technologies were used, what was the goal, etc.</p>
+        </div>
+    </section>
 
-    <footer>
-      <p>© 2024 Template Portfolio by Graham Budd - Cheers, mate 🤙</p>
-    </footer>
-  </body>
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>If you'd like to get in touch, please email me at <a href="mailto:your-email@example.com">your-email@example.com</a>.</p>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2024 Your Name</p>
+</footer>
+
+<script>
+    // Simple animation on scroll
+    window.addEventListener('scroll', () => {
+        const items = document.querySelectorAll('.portfolio-item');
+        items.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                item.style.opacity = 1;
+                item.style.transform = 'translateY(0)';
+            } else {
+                item.style.opacity = 0;
+                item.style.transform = 'translateY(50px)';
+            }
+        });
+    });
+
+    // Initialize opacity and transform for items
+    document.querySelectorAll('.portfolio-item').forEach(item => {
+        item.style.opacity = 0;
+        item.style.transform = 'translateY(50px)';
+        item.style.transition = 'opacity 0.5s, transform 0.5s';
+    });
+</script>
+
+</body>
 </html>
