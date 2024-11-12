@@ -3,126 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Ryan Lai Portfolio</title>
     <style>
-        body {
+        body, html {
             margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
         }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav {
-            margin: 10px 0;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: #ffdd57;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
-        }
-        .portfolio-item {
-            background: white;
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transform: translateY(0);
-            transition: transform 0.3s;
-        }
-        .portfolio-item:hover {
-            transform: translateY(-5px);
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #007bff;
-            color: white;
+        .sky {
             position: relative;
-            bottom: 0;
+            height: 150px; /* Increased height for the night sky */
+            background: #001f3f; /* Dark blue for night sky */
+            overflow: hidden;
+        }
+        .stars {
+            position: absolute;
             width: 100%;
+            height: 100%;
+            background: url('https://example.com/stars.png') repeat; /* Replace with your stars image */
+            opacity: 0.8; /* Adjust opacity for stars */
+        }
+        .sea {
+            position: relative;
+            height: 300vh; /* Increase height for deeper scrolling */
+            overflow: hidden;
+            background: linear-gradient(to bottom, #aeeeee, #003366); /* Gradient background for the sea */
+        }
+        .waves {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100px; /* Height of the waves */
+            overflow: hidden;
+            animation: wave 10s linear infinite;
+        }
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: url('https://example.com/wave.png') repeat-x; /* Replace with your wave image */
+            animation: wave 10s linear infinite;
+        }
+        @keyframes wave {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%);
+            }
+        }
+        .boat {
+            position: absolute;
+            width: 80px;
+            top: 20px; /* Position the boat above the waves */
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bob 2s ease-in-out infinite;
+        }
+        @keyframes bob {
+            0%, 100% {
+                top: 20px; /* Initial position */
+            }
+            50% {
+                top: 25px; /* Slightly higher position */
+            }
+        }
+        .fish {
+            position: absolute;
+            width: 50px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: none; /* Initially hidden */
+        }
+        .fish:hover {
+            transform: scale(1.2);
+        }
+        .content {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            font-size: 1.5em;
+            width: 80%;
+        }
+        @media (max-width: 600px) {
+            .boat {
+                width: 50px; /* Smaller boat on mobile */
+            }
+            .fish {
+                width: 30px; /* Smaller fish on mobile */
+            }
+            .content {
+                font-size: 1em; /* Smaller text on mobile */
+            }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>My Portfolio</h1>
-    <nav>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-    </nav>
-</header>
-
-<div class="container">
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Welcome to my portfolio! I'm a passionate developer with experience in web technologies.</p>
-    </section>
-
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="portfolio-item">
-            <h3>Project 1</h3>
-            <p>placeholder tag</p>
-        </div>
-        <div class="portfolio-item">
-            <h3>Project 2</h3>
-            <p>placeholder tag</p>
-        </div>
-        <div class="portfolio-item">
-            <h3>Project 3</h3>
-            <p>placeholder tag</p>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>If you'd like to get in touch, please email me at <a href="mailto:your-email@example.com">your-email@example.com</a>.</p>
-    </section>
+<div class="sky">
+    <div class="stars"></div> <!-- Background for stars -->
 </div>
 
-<footer>
-    <p>&copy; 2024 Your Name</p>
-</footer>
+<div class="sea" id="sea">
+    <div class="waves">
+        <div class="wave"></div>
+    </div>
+    <img src=https://images.vexels.com/content/261268/preview/launch-ferry-ship-drawing-59abd8.png" class="boat" alt="Boat"> <!-- Replace with your boat image -->
+    
+    <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/56/Cuddlefish_clear.png/revision/latest?cb=20211121005915" class="fish" style="top: 40%; left: 10%;" onclick="showContent('about')">
+    <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/50/Skitter_clear.png/revision/latest?cb=20230729124342" class="fish" style="top: 70%; left: 30%;" onclick="showContent('projects')">
+    <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/4/45/Trillow-transparent-background.png/revision/latest?cb=20191117221642" class="fish" style="top: 90%; left: 50%;" onclick="showContent('contact')">
+    
+    <div class="content" id="content">
+        <h1>Welcome to My Portfolio</h1>
+        <p>Click on the fish to learn more about me!</p>
+    </div>
+</div>
 
 <script>
-    // Simple animation on scroll
+    const sea = document.getElementById('sea');
+    const contentDiv = document.getElementById('content');
+    const fishElements = document.querySelectorAll('.fish');
+    
     window.addEventListener('scroll', () => {
-        const items = document.querySelectorAll('.portfolio-item');
-        items.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-                item.style.opacity = 1;
-                item.style.transform = 'translateY(0)';
+        const scrollTop = window.scrollY;
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const scrollFraction = scrollTop / maxScroll;
+        
+        // Change the background color based on scroll position
+        const colorValue = Math.floor(50 + (scrollFraction * 205)); // Darker color
+        sea.style.background = `rgb(0, 0, ${colorValue})`;
+        
+        // Show fish based on scroll position
+        fishElements.forEach((fish, index) => {
+            if (scrollTop > (index + 1) * (maxScroll / (fishElements.length + 1))) {
+                fish.style.display = 'block'; // Show fish
             } else {
-                item.style.opacity = 0;
-                item.style.transform = 'translateY(50px)';
+                fish.style.display = 'none'; // Hide fish
             }
         });
     });
 
-    // Initialize opacity and transform for items
-    document.querySelectorAll('.portfolio-item').forEach(item => {
-        item.style.opacity = 0;
-        item.style.transform = 'translateY(50px)';
-        item.style.transition = 'opacity 0.5s, transform 0.5s';
-    });
+    function showContent(section) {
+        let content = '';
+        switch (section) {
+            case 'about':
+                content = '<h1>About Me</h1><p>This is the About section of the portfolio.</p>';
+                break;
+            case 'projects':
+                content = '<h1>My Projects</h1><p>This is the Projects section of the portfolio.</p>';
+                break;
+            case 'contact':
+                content = '<h1>Contact Me</h1><p>This is the Contact section of the portfolio.</p>';
+                break;
+        }
+        contentDiv.innerHTML = content + '<button onclick="hideContent()">Back</button>';
+    }
+
+    function hideContent() {
+        contentDiv.innerHTML = '<h1>Welcome to My Portfolio</h1><p>Click on the fish to learn more about me!</p>';
+    }
 </script>
 
 </body>
