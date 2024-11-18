@@ -10,12 +10,12 @@
             padding: 0;
             font-family: Arial, sans-serif;
             height: 100%;
-            overflow-y: scroll; /* Allow vertical scrolling */
-            scroll-behavior: smooth; /* Smooth scrolling effect */
+            overflow-y: scroll;
+            scroll-behavior: smooth;
         }
         .sea {
             position: relative;
-            height: 200vh; /* Increased height for scrolling */
+            height: 200vh;
             background: linear-gradient(to bottom, #aeeeee, #003366);
             overflow: hidden;
         }
@@ -47,7 +47,7 @@
         .hook {
             position: absolute;
             width: 50px;
-            pointer-events: none; /* Prevent mouse events on hook */
+            pointer-events: none;
         }
         .content {
             position: absolute;
@@ -63,21 +63,50 @@
           position: absolute; 
           top: 0; 
           left: 0; 
-          pointer-events: none; /* Prevent mouse events on canvas */
+          pointer-events: none; 
         }
+
+        /* New styles for the preview box */
+        .preview-box {
+            display: none; /* Hidden by default */
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Show preview box when hovering over fish */
+        .fish:hover + .preview-box {
+            display: block; /* Show on hover */
+        }
+
     </style>
 </head>
 <body>
     <div class="sea" id="sea">
         <img src="https://images.vexels.com/content/261268/preview/launch-ferry-ship-drawing-59abd8.png" class="boat" alt="Boat">
         
-        <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/56/Cuddlefish_clear.png/revision/latest?cb=20211121005915" class="fish" style="top: 40%; left: 10%;" onclick="showContent('about')">
-        <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/50/Skitter_clear.png/revision/latest?cb=20230729124342" class="fish" style="top: 70%; left: 30%;" onclick="showContent('projects')">
-        <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/4/45/Trillow-transparent-background.png/revision/latest?cb=20191117221642" class="fish" style="top: 90%; left: 50%;" onclick="showContent('contact')">
-        
+        <!-- Fish images with corresponding preview boxes -->
+        <div style="position:absolute; top:40%; left:10%;">
+          <a target = "_blank" href = "diamondranger20.github.io"> <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/56/Cuddlefish_clear.png/revision/latest?cb=20211121005915" class="fish" onclick="showContent('about')"> </a>
+          <div class="preview-box" style="left:70%; top:-10%;">Visit previous website on click.</div>
+        </div>
+
+        <div style="position:absolute; top:70%; left:30%;">
+          <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/50/Skitter_clear.png/revision/latest?cb=20230729124342" class="fish" onclick="showContent('projects')">
+          <div class="preview-box" style="left:70%; top:-10%;">Projects Info</div>
+        </div>
+
+        <div style="position:absolute; top:90%; left:50%;">
+          <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/4/45/Trillow-transparent-background.png/revision/latest?cb=20191117221642" class="fish" onclick="showContent('contact')">
+          <div class="preview-box" style="left:-150%; top:-10%;">Contact Information</div>
+        </div>
+
         <img src="https://images.vexels.com/media/users/3/207123/isolated/lists/c68c0014749e9df86d54c8910f27a698-fishing-hook-illustration.png" class="hook" alt="Fishing Hook" id="hook">
         
         <canvas id="stringCanvas"></canvas>
+        <canvas id="bubbleCanvas"></canvas>
 
         <div class="content" id="content">
             <h1>Fish for ideas.</h1>
@@ -86,20 +115,17 @@
     </div>
 
     <script>
-        const contentDiv = document.getElementById('content');
-        const hook = document.getElementById('hook');
-        const boat = document.querySelector('.boat');
+      const contentDiv = document.getElementById('content');
+      const hook = document.getElementById('hook');
+      const boat = document.querySelector('.boat');
 
-        // Update hook position based on mouse movement
-        document.addEventListener('mousemove', (e) => {
-          const hookWidth = hook.offsetWidth / 2; // Center the hook
+      document.addEventListener('mousemove', (e) => {
+          const hookWidth = hook.offsetWidth / 2; 
           const hookHeight = hook.offsetHeight / 2;
 
-          // Set hook position to follow cursor
-          hook.style.left = (e.clientX - hookWidth) + 'px';
-          hook.style.top = (e.clientY - hookHeight) + 'px';
+          hook.style.left = (e.pageX - hookWidth) + 'px';
+          hook.style.top = (e.pageY - hookHeight) + 'px';
 
-          // Draw string from boat to hook
           drawString();
       });
 
@@ -107,14 +133,13 @@
           const canvas = document.getElementById('stringCanvas');
           const ctx = canvas.getContext('2d');
 
-          // Set canvas size to full window size
           canvas.width = window.innerWidth; 
           canvas.height = window.innerHeight; 
 
           const boatRect = boat.getBoundingClientRect();
           const boatCenterX = boatRect.left + boatRect.width / 2;
 
-          ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous string
+          ctx.clearRect(0, 0, canvas.width, canvas.height); 
           ctx.beginPath();
           ctx.moveTo(boatCenterX, boatRect.top + boatRect.height);
           ctx.lineTo(hook.offsetLeft + (hook.offsetWidth / 2), hook.offsetTop + (hook.offsetHeight / 2));
@@ -127,21 +152,58 @@
           let content = '';
           switch (section) {
               case 'about':
-                  content = '<h1>About the Game</h1><p>Cat Goes Fishing is a relaxing and charming fishing game where you play as a cat on a quest to catch various types of fish.</p>';
+                  content = '<h1>Go fishing with Ryan Lai</h1>';
                   break;
               case 'projects':
-                  content = '<h1>Game Features</h1><p>Explore the underwater world, upgrade your fishing gear, and try to catch them all!</p>';
+                  content = '<h1>Each fish has different info blah blah</h1><p>filler text ngl</p>';
                   break;
               case 'contact':
-                  content = '<h1>Contact Us</h1><p>If you have any questions or feedback, please reach out to us at catgoesfishing@example.com.</p>';
+                  content = '<h1>Contact Me!!</h1><p>placeholder again</p>';
                   break;
           }
           contentDiv.innerHTML = content + '<button onclick="hideContent()">Back</button>';
       }
 
       function hideContent() {
-          contentDiv.innerHTML = '<h1>Welcome to Cat Goes Fishing</h1><p>Click on the fish to learn more!</p>';
+          contentDiv.innerHTML = '<h1>Welcome to my portfolio wowwww</h1><p>Click on the fish to learn more!</p>';
       }
+
+      const bubbleCanvas = document.getElementById('bubbleCanvas');
+      const bubbleCtx = bubbleCanvas.getContext('2d');
+      let bubbles = [];
+
+      function createBubble() {
+          const x = Math.random() * window.innerWidth; 
+          const y = window.innerHeight; 
+          const radius = Math.random() * (15 - 5) + 5; 
+          
+          bubbles.push({ x, y, radius });
+      }
+
+      function drawBubbles() {
+          bubbleCtx.clearRect(0, 0, bubbleCanvas.width, bubbleCanvas.height); 
+
+          bubbles.forEach((bubble, index) => {
+              bubble.y -= Math.random() * (2 - 1) + 1; 
+              bubbleCtx.beginPath();
+              bubbleCtx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+              bubbleCtx.fillStyle = 'rgba(255,255,255,0.7)';
+              bubbleCtx.fill();
+              bubbleCtx.closePath();
+
+              if (bubble.y + bubble.radius < 0) {
+                  bubbles.splice(index, 1);
+              }
+          });
+      }
+
+      function animateBubbles() {
+          drawBubbles();
+          requestAnimationFrame(animateBubbles);
+      }
+
+      setInterval(createBubble, 2000); 
+      animateBubbles(); 
 
     </script>
 
