@@ -3,74 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ryan Lai Portfolio</title>
+    <title>Ryan Lai: Portfolio</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            height: 100vh;
+            height: 100%;
             overflow-y: scroll;
             scroll-behavior: smooth;
         }
-        .sky {
-            position: relative;
-            height: 150px; /* Increased height for the night sky */
-            background: #001f3f; /* Dark blue for night sky */
-            overflow: hidden;
-        }
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('https://example.com/stars.png') repeat; /* Replace with your stars image */
-            opacity: 0.8; /* Adjust opacity for stars */
-        }
         .sea {
             position: relative;
-            height: 300vh; /* Increase height for deeper scrolling */
+            height: 100vh;
+            background: linear-gradient(to bottom, #aeeeee, #003366);
             overflow: hidden;
-            background: linear-gradient(to bottom, #aeeeee, #003366); /* Gradient background for the sea */
-        }
-        .waves {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            height: 100px; /* Height of the waves */
-            overflow: hidden;
-            animation: wave 10s linear infinite;
-        }
-        .wave {
-            position: absolute;
-            width: 200%;
-            height: 100%;
-            background: url('https://example.com/wave.png') repeat-x; /* Replace with your wave image */
-            animation: wave 10s linear infinite;
-        }
-        @keyframes wave {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(-50%);
-            }
         }
         .boat {
             position: absolute;
-            width: 80px;
-            top: 20px; /* Position the boat above the waves */
+            width: 100px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             animation: bob 2s ease-in-out infinite;
         }
         @keyframes bob {
             0%, 100% {
-                top: 20px; /* Initial position */
+                top: 20px;
             }
             50% {
-                top: 25px; /* Slightly higher position */
+                top: 25px;
             }
         }
         .fish {
@@ -78,10 +40,16 @@
             width: 50px;
             cursor: pointer;
             transition: transform 0.3s;
-            display: none; /* Initially hidden */
         }
         .fish:hover {
             transform: scale(1.2);
+        }
+        .hook {
+            position: fixed;
+            width: 50px;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .content {
             position: absolute;
@@ -93,85 +61,46 @@
             font-size: 1.5em;
             width: 80%;
         }
-        @media (max-width: 600px) {
-            .boat {
-                width: 50px; /* Smaller boat on mobile */
-            }
-            .fish {
-                width: 30px; /* Smaller fish on mobile */
-            }
-            .content {
-                font-size: 1em; /* Smaller text on mobile */
-            }
-        }
     </style>
 </head>
 <body>
-
-<div class="sky">
-    <div class="stars"></div> <!-- Background for stars -->
-</div>
-
-<div class="sea" id="sea">
-    <div class="waves">
-        <div class="wave"></div>
-    </div>
-    <img src=https://images.vexels.com/content/261268/preview/launch-ferry-ship-drawing-59abd8.png" class="boat" alt="Boat"> <!-- Replace with your boat image -->
-    
-    <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/56/Cuddlefish_clear.png/revision/latest?cb=20211121005915" class="fish" style="top: 40%; left: 10%;" onclick="showContent('about')">
-    <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/50/Skitter_clear.png/revision/latest?cb=20230729124342" class="fish" style="top: 70%; left: 30%;" onclick="showContent('projects')">
-    <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/4/45/Trillow-transparent-background.png/revision/latest?cb=20191117221642" class="fish" style="top: 90%; left: 50%;" onclick="showContent('contact')">
-    
-    <div class="content" id="content">
-        <h1>Welcome to My Portfolio</h1>
-        <p>Click on the fish to learn more about me!</p>
-    </div>
-</div>
-
-<script>
-    const sea = document.getElementById('sea');
-    const contentDiv = document.getElementById('content');
-    const fishElements = document.querySelectorAll('.fish');
-    
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
-        const scrollFraction = scrollTop / maxScroll;
+    <div class="sea" id="sea">
+        <img src="https://images.vexels.com/content/261268/preview/launch-ferry-ship-drawing-59abd8.png" class="boat" alt="Boat">
         
-        // Change the background color based on scroll position
-        const colorValue = Math.floor(50 + (scrollFraction * 205)); // Darker color
-        sea.style.background = `rgb(0, 0, ${colorValue})`;
+        <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/56/Cuddlefish_clear.png/revision/latest?cb=20211121005915" class="fish" style="top: 40%; left: 10%;" onclick="showContent('about')">
+        <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/50/Skitter_clear.png/revision/latest?cb=20230729124342" class="fish" style="top: 70%; left: 30%;" onclick="showContent('projects')">
+        <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/4/45/Trillow-transparent-background.png/revision/latest?cb=20191117221642" class="fish" style="top: 90%; left: 50%;" onclick="showContent('contact')">
         
-        // Show fish based on scroll position
-        fishElements.forEach((fish, index) => {
-            if (scrollTop > (index + 1) * (maxScroll / (fishElements.length + 1))) {
-                fish.style.display = 'block'; // Show fish
-            } else {
-                fish.style.display = 'none'; // Hide fish
+        <img src="https://images.vexels.com/media/users/3/207123/isolated/lists/c68c0014749e9df86d54c8910f27a698-fishing-hook-illustration.png" class="hook" alt="Fishing Hook">
+        
+        <div class="content" id="content">
+            <h1>Fish for ideas.</h1>
+            <p>Click on the fish to learn more!</p>
+        </div>
+    </div>
+
+    <script>
+        const contentDiv = document.getElementById('content');
+
+        function showContent(section) {
+            let content = '';
+            switch (section) {
+                case 'about':
+                    content = '<h1>About the Game</h1><p>Cat Goes Fishing is a relaxing and charming fishing game where you play as a cat on a quest to catch various types of fish.</p>';
+                    break;
+                case 'projects':
+                    content = '<h1>Game Features</h1><p>Explore the underwater world, upgrade your fishing gear, and try to catch them all!</p>';
+                    break;
+                case 'contact':
+                    content = '<h1>Contact Us</h1><p>If you have any questions or feedback, please reach out to us at catgoesfishing@example.com.</p>';
+                    break;
             }
-        });
-    });
-
-    function showContent(section) {
-        let content = '';
-        switch (section) {
-            case 'about':
-                content = '<h1>About Me</h1><p>This is the About section of the portfolio.</p>';
-                break;
-            case 'projects':
-                content = '<h1>My Projects</h1><p>This is the Projects section of the portfolio.</p>';
-                break;
-            case 'contact':
-                content = '<h1>Contact Me</h1><p>This is the Contact section of the portfolio.</p>';
-                break;
+            contentDiv.innerHTML = content + '<button onclick="hideContent()">Back</button>';
         }
-        contentDiv.innerHTML = content + '<button onclick="hideContent()">Back</button>';
-    }
 
-    function hideContent() {
-        contentDiv.innerHTML = '<h1>Welcome to My Portfolio</h1><p>Click on the fish to learn more about me!</p>';
-    }
-</script>
-
+        function hideContent() {
+            contentDiv.innerHTML = '<h1>Welcome to Cat Goes Fishing</h1><p>Click on the fish to learn more!</p>';
+        }
+    </script>
 </body>
 </html>
