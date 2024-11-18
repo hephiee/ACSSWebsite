@@ -45,11 +45,12 @@
             transform: scale(1.2);
         }
         .hook {
-            position: fixed;
+            position: absolute;
             width: 50px;
-            top: 100px;
-            left: 50%;
-            transform: translateX(-50%);
+            cursor: grab;
+        }
+        .hook:active {
+            cursor: grabbing;
         }
         .content {
             position: absolute;
@@ -71,7 +72,7 @@
         <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/5/50/Skitter_clear.png/revision/latest?cb=20230729124342" class="fish" style="top: 70%; left: 30%;" onclick="showContent('projects')">
         <img src="https://static.wikia.nocookie.net/cat-goes-fishing/images/4/45/Trillow-transparent-background.png/revision/latest?cb=20191117221642" class="fish" style="top: 90%; left: 50%;" onclick="showContent('contact')">
         
-        <img src="https://images.vexels.com/media/users/3/207123/isolated/lists/c68c0014749e9df86d54c8910f27a698-fishing-hook-illustration.png" class="hook" alt="Fishing Hook">
+        <img src="https://images.vexels.com/media/users/3/207123/isolated/lists/c68c0014749e9df86d54c8910f27a698-fishing-hook-illustration.png" class="hook" alt="Fishing Hook" id="hook">
         
         <div class="content" id="content">
             <h1>Fish for ideas.</h1>
@@ -81,6 +82,29 @@
 
     <script>
         const contentDiv = document.getElementById('content');
+        const hook = document.getElementById('hook');
+        let isDragging = false;
+
+        hook.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            hook.style.transition = 'none'; // Disable transition for smooth dragging
+            document.addEventListener('mousemove', mouseMoveHandler);
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            hook.style.transition = ''; // Re-enable transitions
+            document.removeEventListener('mousemove', mouseMoveHandler);
+        });
+
+        function mouseMoveHandler(e) {
+            if (isDragging) {
+                const hookWidth = hook.offsetWidth;
+                const hookHeight = hook.offsetHeight;
+                hook.style.left = (e.clientX - hookWidth / 2) + 'px';
+                hook.style.top = (e.clientY - hookHeight / 2) + 'px';
+            }
+        }
 
         function showContent(section) {
             let content = '';
