@@ -10,12 +10,12 @@
             padding: 0;
             font-family: Arial, sans-serif;
             height: 100%;
-            overflow-y: scroll;
-            scroll-behavior: smooth;
+            overflow-y: scroll; /* Allow vertical scrolling */
+            scroll-behavior: smooth; /* Smooth scrolling effect */
         }
         .sea {
             position: relative;
-            height: 100vh;
+            height: 200vh; /* Increased height for scrolling */
             background: linear-gradient(to bottom, #aeeeee, #003366);
             overflow: hidden;
         }
@@ -47,10 +47,7 @@
         .hook {
             position: absolute;
             width: 50px;
-            cursor: grab;
-        }
-        .hook:active {
-            cursor: grabbing;
+            pointer-events: none; /* Prevent mouse events on hook */
         }
         .content {
             position: absolute;
@@ -61,6 +58,12 @@
             text-align: center;
             font-size: 1.5em;
             width: 80%;
+        }
+        canvas {
+          position: absolute; 
+          top: 0; 
+          left: 0; 
+          pointer-events: none; /* Prevent mouse events on canvas */
         }
     </style>
 </head>
@@ -74,6 +77,8 @@
         
         <img src="https://images.vexels.com/media/users/3/207123/isolated/lists/c68c0014749e9df86d54c8910f27a698-fishing-hook-illustration.png" class="hook" alt="Fishing Hook" id="hook">
         
+        <canvas id="stringCanvas"></canvas>
+
         <div class="content" id="content">
             <h1>Fish for ideas.</h1>
             <p>Click on the fish to learn more!</p>
@@ -83,48 +88,62 @@
     <script>
         const contentDiv = document.getElementById('content');
         const hook = document.getElementById('hook');
-        let isDragging = false;
+        const boat = document.querySelector('.boat');
 
-        hook.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            hook.style.transition = 'none'; // Disable transition for smooth dragging
-            document.addEventListener('mousemove', mouseMoveHandler);
-        });
+        // Update hook position based on mouse movement
+        document.addEventListener('mousemove', (e) => {
+          const hookWidth = hook.offsetWidth / 2; // Center the hook
+          const hookHeight = hook.offsetHeight / 2;
 
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            hook.style.transition = ''; // Re-enable transitions
-            document.removeEventListener('mousemove', mouseMoveHandler);
-        });
+          // Set hook position to follow cursor
+          hook.style.left = (e.clientX - hookWidth) + 'px';
+          hook.style.top = (e.clientY - hookHeight) + 'px';
 
-        function mouseMoveHandler(e) {
-            if (isDragging) {
-                const hookWidth = hook.offsetWidth;
-                const hookHeight = hook.offsetHeight;
-                hook.style.left = (e.clientX - hookWidth / 2) + 'px';
-                hook.style.top = (e.clientY - hookHeight / 2) + 'px';
-            }
-        }
+          // Draw string from boat to hook
+          drawString();
+      });
 
-        function showContent(section) {
-            let content = '';
-            switch (section) {
-                case 'about':
-                    content = '<h1>About the Game</h1><p>Cat Goes Fishing is a relaxing and charming fishing game where you play as a cat on a quest to catch various types of fish.</p>';
-                    break;
-                case 'projects':
-                    content = '<h1>Game Features</h1><p>Explore the underwater world, upgrade your fishing gear, and try to catch them all!</p>';
-                    break;
-                case 'contact':
-                    content = '<h1>Contact Us</h1><p>If you have any questions or feedback, please reach out to us at catgoesfishing@example.com.</p>';
-                    break;
-            }
-            contentDiv.innerHTML = content + '<button onclick="hideContent()">Back</button>';
-        }
+      function drawString() {
+          const canvas = document.getElementById('stringCanvas');
+          const ctx = canvas.getContext('2d');
 
-        function hideContent() {
-            contentDiv.innerHTML = '<h1>Welcome to Cat Goes Fishing</h1><p>Click on the fish to learn more!</p>';
-        }
+          // Set canvas size to full window size
+          canvas.width = window.innerWidth; 
+          canvas.height = window.innerHeight; 
+
+          const boatRect = boat.getBoundingClientRect();
+          const boatCenterX = boatRect.left + boatRect.width / 2;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous string
+          ctx.beginPath();
+          ctx.moveTo(boatCenterX, boatRect.top + boatRect.height);
+          ctx.lineTo(hook.offsetLeft + (hook.offsetWidth / 2), hook.offsetTop + (hook.offsetHeight / 2));
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+      }
+
+      function showContent(section) {
+          let content = '';
+          switch (section) {
+              case 'about':
+                  content = '<h1>About the Game</h1><p>Cat Goes Fishing is a relaxing and charming fishing game where you play as a cat on a quest to catch various types of fish.</p>';
+                  break;
+              case 'projects':
+                  content = '<h1>Game Features</h1><p>Explore the underwater world, upgrade your fishing gear, and try to catch them all!</p>';
+                  break;
+              case 'contact':
+                  content = '<h1>Contact Us</h1><p>If you have any questions or feedback, please reach out to us at catgoesfishing@example.com.</p>';
+                  break;
+          }
+          contentDiv.innerHTML = content + '<button onclick="hideContent()">Back</button>';
+      }
+
+      function hideContent() {
+          contentDiv.innerHTML = '<h1>Welcome to Cat Goes Fishing</h1><p>Click on the fish to learn more!</p>';
+      }
+
     </script>
+
 </body>
 </html>
