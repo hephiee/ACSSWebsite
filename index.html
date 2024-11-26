@@ -47,9 +47,45 @@
             width: 50px;
             cursor: pointer;
             transition: transform 0.3s;
+            animation: swim 4s ease-in-out infinite;
         }
+
+        /* Different timing for each fish to make it look more natural */
+        .fish-container:nth-child(1) .fish {
+            animation: swim 3.8s ease-in-out infinite;
+        }
+
+        .fish-container:nth-child(2) .fish {
+            animation: swim 4.2s ease-in-out infinite;
+        }
+
+        .fish-container:nth-child(3) .fish {
+            animation: swim 3.6s ease-in-out infinite;
+        }
+
+        /* Swimming animation */
+        @keyframes swim {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateX(10px) translateY(-5px) rotate(2deg);
+            }
+            50% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+            }
+            75% {
+                transform: translateX(-10px) translateY(5px) rotate(-2deg);
+            }
+            100% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+            }
+        }
+
+        /* Keep the hover effect but modify it to work with the animation */
         .fish:hover {
             transform: scale(1.2);
+            animation-play-state: paused;
         }
         .hook {
             position: fixed;
