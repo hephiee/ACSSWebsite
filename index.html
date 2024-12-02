@@ -164,9 +164,20 @@
             background-image: 
                 radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 50px 160px, #ffffff, rgba(0,0,0,0));
+                radial-gradient(1px 1px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 160px 120px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 50px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 400px 70px, #ffffff, rgba(0,0,0,0));
             background-repeat: repeat;
-            animation: twinkle 1s steps(2) infinite; /* More 8-bit style blinking */
+            animation: twinkle 1s steps(2) infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .system-text {
@@ -216,14 +227,26 @@
             animation: introSwim 4s steps(8) infinite;
             image-rendering: pixelated;
             top: 60%;
+            transform: scaleX(-1); /* Flip the fish horizontally */
         }
 
-        .intro-hook {
-            position: absolute;
-            width: 40px;
-            animation: hookDrop 6s steps(12) forwards;
-            top: 30%;
-            image-rendering: pixelated;
+        @keyframes introSwim {
+            0% { 
+                left: -100px;
+                transform: scaleX(-1) translateY(0);
+            }
+            50% { 
+                left: calc(100% + 100px);
+                transform: scaleX(-1) translateY(-8px);
+            }
+            51% { 
+                left: -100px;
+                transform: scaleX(-1) translateY(8px);
+            }
+            100% { 
+                left: calc(100% + 100px);
+                transform: scaleX(-1) translateY(0);
+            }
         }
 
         /* Add loading dots animation */
@@ -246,12 +269,30 @@
             100% { transform: translateY(8px); }
         }
 
-        @keyframes introSwim {
-            0% { transform: translateX(-100vw) translateY(0); }
-            50% { transform: translateX(100vw) translateY(-8px); }
-            51% { transform: translateX(-100vw) translateY(8px); }
-            100% { transform: translateX(100vw) translateY(0); }
+        /* Add shooting stars */
+        @keyframes shootingStar {
+            0% {
+                transform: translateX(0) translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(200px) translateY(200px) rotate(45deg);
+                opacity: 0;
+            }
         }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            box-shadow: 0 0 4px 1px white;
+            animation: shootingStar 2s linear infinite;
+        }
+
+        .shooting-star:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+        .shooting-star:nth-child(2) { top: 15%; left: 60%; animation-delay: 1s; }
+        .shooting-star:nth-child(3) { top: 5%; left: 40%; animation-delay: 1.5s; }
 
         /* Enhanced glitch animation */
         @keyframes glitch {
@@ -544,19 +585,22 @@
 <body>
     <div id="intro">
         <div class="intro-stars"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
         <div class="water-overlay"></div>
         <div class="system-text top-left">
-            &gt; CHECKING WEATHER<br>
-            &gt; PREPARING BAIT<br>
-            &gt; SCANNING WATER
+            > CHECKING WEATHER<br>
+            > PREPARING BAIT<br>
+            > SCANNING WATER
         </div>
         <img src="hook.png" class="intro-hook" alt="Hook">
         <div class="intro-text">Casting Line</div>
         <img src="cuddlefish.png" class="intro-fish" alt="Swimming Fish">
         <div class="system-text bottom-right">
-            &gt; WATER: PERFECT<br>
-            &gt; BAIT: READY<br>
-            &gt; TIME TO FISH!
+            > WATER: PERFECT<br>
+            > BAIT: READY<br>
+            > TIME TO FISH!
         </div>
     </div>
     <div class="legend">
