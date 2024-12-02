@@ -580,6 +580,46 @@
             color: rgba(255, 255, 255, 0.9);
             text-shadow: 0 0 5px rgba(90, 184, 235, 0.5);
         }
+
+        .water-text {
+            position: fixed;
+            left: 30px;
+            top: 60vh; /* Position in the water area */
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 1em;
+            line-height: 1.8em;
+            text-shadow: 
+                0 0 10px rgba(90, 184, 235, 0.8),
+                0 0 20px rgba(0, 51, 102, 0.8);
+            z-index: 10;
+            max-width: 300px;
+            animation: waterTextFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes waterTextFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Update fish container random position function in your JavaScript */
+        function getRandomPosition() {
+            // For top position: between 40% and 90% of viewport height
+            let top;
+            do {
+                top = Math.random() * (90 - 40) + 40;
+            } while (top > 45 && top < 55); /* Avoid middle section */
+/
+            /* For left position: between 25% and 90% of viewport width
+            // This ensures fish don't spawn near the text on the left */
+            const left = Math.random() * (90 - 25) + 25; /* Start at 25% of screen width*/
+
+            return { top, left };
+        }
     </style>
 </head>
 <body>
@@ -662,6 +702,12 @@
             <h1>Fish for ideas.</h1>
             <p>Click on the fish to learn more!</p>
         </div>
+    </div>
+
+    <div class="water-text">
+        My name is Ryan,<br>
+        I am a student<br>
+        at HKIS.
     </div>
 
     <script>
@@ -756,27 +802,71 @@
           });
       }
 
+      // Add ripples array
+      let ripples = [];
+
       function drawBubbles() {
           bubbleCtx.clearRect(0, 0, bubbleCanvas.width, bubbleCanvas.height);
 
+          // Draw ripples
+          ripples.forEach((ripple, index) => {
+              ripple.width += ripple.speed;
+              ripple.opacity -= 0.05;
+
+              if (ripple.opacity <= 0) {
+                  ripples.splice(index, 1);
+                  return;
+              }
+
+              // Draw horizontal ripple that follows wave pattern
+              bubbleCtx.beginPath();
+              const waveHeight = 3;
+              const segments = 20;
+              
+              for (let i = 0; i <= segments; i++) {
+                  const x = ripple.x - ripple.width/2 + (i * ripple.width/segments);
+                  const waveOffset = Math.sin(x * 0.05 + ripple.time) * waveHeight;
+                  const y = ripple.y + waveOffset;
+                  
+                  if (i === 0) {
+                      bubbleCtx.moveTo(x, y);
+                  } else {
+                      bubbleCtx.lineTo(x, y);
+                  }
+              }
+
+              bubbleCtx.strokeStyle = `rgba(255, 255, 255, ${ripple.opacity})`;
+              bubbleCtx.lineWidth = 2;
+              bubbleCtx.stroke();
+
+              ripple.time += 0.1;
+          });
+
+          // Draw bubbles
           bubbles.forEach((bubble, index) => {
-              // Update position, but stop at water line (30vh)
               bubble.time += 0.01;
-              const waterLine = window.innerHeight * 0.3; // 30vh in pixels
+              const waterLine = window.innerHeight * 0.3;
+              
               if (bubble.y > waterLine) {
                   bubble.y -= bubble.speed;
               } else {
-                  // Fade out when reaching water line
-                  bubble.opacity = bubble.opacity ? bubble.opacity - 0.1 : 0.9;
-                  if (bubble.opacity <= 0) {
-                      bubbles.splice(index, 1);
-                      return;
-                  }
+                  // Create horizontal ripple effect when bubble pops
+                  ripples.push({
+                      x: bubble.x,
+                      y: waterLine,
+                      width: 20, // Initial width of ripple
+                      speed: 3,  // How fast ripple expands
+                      opacity: 0.5,
+                      time: Math.random() * Math.PI * 2 // Random start phase
+                  });
+                  
+                  bubbles.splice(index, 1);
+                  return;
               }
               
               bubble.x = bubble.initialX + Math.sin(bubble.time * bubble.wobbleSpeed) * bubble.wobbleDistance;
 
-              // Draw bubble with opacity
+              // Draw bubble
               bubbleCtx.beginPath();
               bubbleCtx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
               
@@ -788,9 +878,9 @@
                   bubble.y, 
                   bubble.radius
               );
-              gradient.addColorStop(0, `rgba(255, 255, 255, ${bubble.opacity || 0.8})`);
-              gradient.addColorStop(0.4, `rgba(255, 255, 255, ${(bubble.opacity || 0.8) * 0.5})`);
-              gradient.addColorStop(1, `rgba(255, 255, 255, ${(bubble.opacity || 0.8) * 0.1})`);
+              gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+              gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.4)');
+              gradient.addColorStop(1, 'rgba(255, 255, 255, 0.1)');
               
               bubbleCtx.fillStyle = gradient;
               bubbleCtx.fill();
